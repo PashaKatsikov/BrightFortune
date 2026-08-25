@@ -49,3 +49,7 @@ app.*.map.json
 /android/keystore/
 *.jks
 *.keystore
+
+# Local release build artifacts copied out for manual distribution.
+/w_brightfortune_*.apk
+/w_brightfortune_*.aab

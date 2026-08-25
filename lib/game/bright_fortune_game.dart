@@ -4,7 +4,9 @@ import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 
 import '../core/assets.dart';
+import '../data/enemy_catalog.dart';
 import '../data/tower_catalog.dart';
+import '../models/enemy_def.dart';
 import '../models/location_def.dart';
 import '../models/tower_def.dart';
 import '../models/upgrade_def.dart';
@@ -13,6 +15,7 @@ import '../services/audio_service.dart';
 import '../services/player_progress.dart';
 import 'arena_layout.dart';
 import 'battle_state.dart';
+import 'bell_blessing_defs.dart';
 import 'collectible_defs.dart';
 import 'components/arena_decor.dart';
 import 'components/collectible_component.dart';
@@ -41,6 +44,8 @@ class BrightFortuneGame extends FlameGame {
 
   String? bellMessage;
   double bellMessageRemaining = 0;
+  BellBlessingKind? bellBlessingKind;
+  bool bellBlessingClaimed = false;
 
   void Function(bool victory)? onGameEnded;
 
@@ -106,7 +111,11 @@ class BrightFortuneGame extends FlameGame {
 
     if (bellMessageRemaining > 0) {
       bellMessageRemaining -= dt;
-      if (bellMessageRemaining <= 0) bellMessage = null;
+      if (bellMessageRemaining <= 0) {
+        bellMessage = null;
+        bellBlessingKind = null;
+        bellBlessingClaimed = false;
+      }
     }
 
     if (state.coreHp <= 0 && !state.gameOver) {
@@ -184,8 +193,9 @@ class BrightFortuneGame extends FlameGame {
   }
 
   void damageWall(Lane lane, double amount) {
+    final reduced = amount * (1 - state.wallShieldReduction);
     final current = state.wallHp[lane] ?? 0;
-    state.wallHp[lane] = (current - amount).clamp(0.0, state.wallMaxHp[lane] ?? 0);
+    state.wallHp[lane] = (current - reduced).clamp(0.0, state.wallMaxHp[lane] ?? 0);
   }
 
   void damageCore(double amount) {
@@ -202,9 +212,34 @@ class BrightFortuneGame extends FlameGame {
     // No-op hook kept for symmetry / future use (e.g. combo tracking).
   }
 
-  void showBellWarning(String text) {
+  void showBellWarning(String text, {WaveDef? incomingWave}) {
     bellMessage = text;
     bellMessageRemaining = 4.0;
+    bellBlessingClaimed = false;
+    bellBlessingKind = incomingWave == null ? null : _pickBellBlessing(incomingWave);
+  }
+
+  /// Picks whichever blessing best answers the upcoming wave's composition:
+  /// a Shield Chime against wall-breakers, an Energy Chime against tough
+  /// elite/boss hitpoint sponges, or a Focus Chime otherwise.
+  BellBlessingKind _pickBellBlessing(WaveDef wave) {
+    final defs = wave.spawns.map((s) => EnemyCatalog.byId[s.enemyId]).whereType<EnemyDef>();
+    if (defs.any((d) => d.wallDamageMultiplier > 1.5)) return BellBlessingKind.shield;
+    if (defs.any((d) => d.category == EnemyCategory.elite || d.category == EnemyCategory.boss)) {
+      return BellBlessingKind.energy;
+    }
+    return BellBlessingKind.focus;
+  }
+
+  /// Called when the player taps the Golden Bell warning banner. Grants the
+  /// prepared blessing exactly once per warning.
+  void claimBellBlessing() {
+    final kind = bellBlessingKind;
+    if (kind == null || bellBlessingClaimed) return;
+    bellBlessingClaimed = true;
+    kind.apply(this);
+    showFloatingLabel(ArenaLayout.center, kind.label);
+    AudioService.instance.playSfx(Assets.sfxRewardReceived);
   }
 
   void onWaveStarted(int waveNumber) {

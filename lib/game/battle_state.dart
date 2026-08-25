@@ -1,7 +1,7 @@
 import '../models/tower_def.dart';
 import '../models/wave_def.dart';
 
-enum BuffType { towerDamage, energyRegen, enemySlow, coreBoost, attackSpeed, repairSpeed, burstChargeRate }
+enum BuffType { towerDamage, energyRegen, enemySlow, coreBoost, attackSpeed, repairSpeed, burstChargeRate, wallShield }
 
 class ActiveBuff {
   final BuffType type;
@@ -73,6 +73,16 @@ class BattleState {
       if (b.type == type) mult += b.magnitude;
     }
     return mult;
+  }
+
+  /// Fraction of incoming wall damage currently blocked by active Shield
+  /// Chime blessings (0 = no protection, capped well short of full immunity).
+  double get wallShieldReduction {
+    double total = 0;
+    for (final b in activeBuffs) {
+      if (b.type == BuffType.wallShield) total += b.magnitude;
+    }
+    return total.clamp(0.0, 0.85);
   }
 
   void addBuff(BuffType type, double magnitude, double duration) {

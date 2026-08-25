@@ -6,6 +6,7 @@ import '../../core/assets.dart';
 import '../../core/colors.dart';
 import '../../core/text_styles.dart';
 import '../../data/tower_catalog.dart';
+import '../../game/bell_blessing_defs.dart';
 import '../../game/bright_fortune_game.dart';
 import '../../models/tower_def.dart';
 import '../../widgets/panel_box.dart';
@@ -110,14 +111,21 @@ class _GameHudState extends State<GameHud> {
           ),
         ),
 
-        // Bell warning banner
+        // Bell warning banner - tap it while it's up to claim a free blessing
+        // tailored to the incoming wave (shield / energy / tower power).
         if (widget.game.bellMessage != null)
           Positioned(
             top: 54,
             left: 0,
             right: 0,
             child: Center(
-              child: _BellBanner(text: widget.game.bellMessage!),
+              child: GestureDetector(
+                onTap: () => setState(() => widget.game.claimBellBlessing()),
+                child: _BellBanner(
+                  text: widget.game.bellMessage!,
+                  hint: widget.game.bellBlessingClaimed ? null : widget.game.bellBlessingKind?.hint,
+                ),
+              ),
             ),
           ),
 
@@ -199,7 +207,8 @@ class _PauseButton extends StatelessWidget {
 
 class _BellBanner extends StatelessWidget {
   final String text;
-  const _BellBanner({required this.text});
+  final String? hint;
+  const _BellBanner({required this.text, this.hint});
 
   @override
   Widget build(BuildContext context) {
@@ -213,12 +222,24 @@ class _BellBanner extends StatelessWidget {
         gradient: const LinearGradient(colors: [Color(0xFFFFE9A8), Color(0xFFE79A1C)]),
         borderColor: Colors.white,
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
-        child: Row(
+        child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.asset(Assets.goldenWarningBell, width: 24, height: 24),
-            const SizedBox(width: 8),
-            Text(text, style: AppText.body_(size: 15, color: const Color(0xFF4A2A00), weight: FontWeight.w800)),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.asset(Assets.goldenWarningBell, width: 24, height: 24),
+                const SizedBox(width: 8),
+                Text(text, style: AppText.body_(size: 15, color: const Color(0xFF4A2A00), weight: FontWeight.w800)),
+              ],
+            ),
+            if (hint != null) ...[
+              const SizedBox(height: 2),
+              Text(
+                hint!,
+                style: AppText.body_(size: 11, color: const Color(0xFF6B3E00), weight: FontWeight.w700),
+              ),
+            ],
           ],
         ),
       ),

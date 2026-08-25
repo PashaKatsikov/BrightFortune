@@ -41,7 +41,7 @@ class WaveController {
       final next = waves[(_waveIndex + 1).clamp(0, waves.length - 1)];
       if (!_warningFired && next.isDangerous && game.state.intermissionRemaining <= next.warningLeadTime) {
         _warningFired = true;
-        game.showBellWarning('Wave ${next.number} incoming!');
+        game.showBellWarning('Wave ${next.number} incoming!', incomingWave: next);
         AudioService.instance.playSfx(Assets.sfxBellWarning);
       }
       if (game.state.intermissionRemaining <= 0) {
