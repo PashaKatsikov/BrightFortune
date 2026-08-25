@@ -31,6 +31,16 @@ class WaveController {
     game.state.intermissionRemaining = initial ? 2.5 : 3.5;
     game.state.waveActive = false;
     _warningFired = false;
+
+    // Only send the Bright Keeper out during calm intermissions - one
+    // leading into a dangerous wave is already claimed by the Golden Bell's
+    // own blessing (see BrightFortuneGame.claimBellBlessing).
+    if (!initial) {
+      final next = waves[(_waveIndex + 1).clamp(0, waves.length - 1)];
+      if (!next.isDangerous) {
+        game.maybeSpawnBrightKeeper();
+      }
+    }
   }
 
   void update(double dt) {

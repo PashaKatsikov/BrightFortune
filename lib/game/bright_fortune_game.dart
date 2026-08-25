@@ -19,6 +19,7 @@ import 'battle_state.dart';
 import 'bell_blessing_defs.dart';
 import 'collectible_defs.dart';
 import 'components/arena_decor.dart';
+import 'components/bright_keeper_component.dart';
 import 'components/collectible_component.dart';
 import 'components/effects_misc.dart';
 import 'components/energy_beam_component.dart';
@@ -221,6 +222,64 @@ class BrightFortuneGame extends FlameGame {
 
   void onCollectibleExpired(CollectibleComponent c) {
     // No-op hook kept for symmetry / future use (e.g. combo tracking).
+  }
+
+  // ---------------------------------------------------------------------
+  // Bright Keeper visits
+  // ---------------------------------------------------------------------
+  /// Called once per calm intermission (i.e. one that isn't already leading
+  /// into a Golden Bell warning) to maybe send the Bright Keeper drifting
+  /// across the garden. Harder locations see it less often.
+  void maybeSpawnBrightKeeper() {
+    if (world.children.whereType<BrightKeeperComponent>().isNotEmpty) return;
+    final chance = (0.75 - location.index * 0.12).clamp(0.15, 0.9);
+    if (rng.nextDouble() > chance) return;
+    world.add(BrightKeeperComponent(game: this));
+  }
+
+  /// Grants the Bright Keeper's gift once tapped: mends the worst-damaged
+  /// wall, hands out a random berry buff, or - only when every wall is
+  /// already at full strength - lets the player skip straight to the next
+  /// wave.
+  void onBrightKeeperTapped(Vector2 pos) {
+    final wallsFull = Lane.values.every((l) => (state.wallHp[l] ?? 0) >= (state.wallMaxHp[l] ?? 1) - 0.01);
+    final needsRepair = !wallsFull;
+
+    final options = <void Function()>[() => _keeperBerryGift(pos)];
+    if (needsRepair) options.add(() => _keeperMendWalls(pos));
+    if (wallsFull && state.intermission) options.add(() => _keeperSkipIntermission(pos));
+
+    options[rng.nextInt(options.length)]();
+    AudioService.instance.playSfx(Assets.sfxRewardReceived);
+  }
+
+  void _keeperMendWalls(Vector2 pos) {
+    Lane? worstLane;
+    var worstPct = 1.0;
+    for (final lane in Lane.values) {
+      final hp = state.wallHp[lane] ?? 0;
+      final maxHp = state.wallMaxHp[lane] ?? 1;
+      final pct = hp / maxHp;
+      if (pct < worstPct) {
+        worstPct = pct;
+        worstLane = lane;
+      }
+    }
+    if (worstLane == null) return;
+    final maxHp = state.wallMaxHp[worstLane]!;
+    state.wallHp[worstLane] = ((state.wallHp[worstLane] ?? 0) + maxHp * 0.2).clamp(0.0, maxHp);
+    showFloatingLabel(pos, 'Wall Mended!');
+  }
+
+  void _keeperBerryGift(Vector2 pos) {
+    final berry = kBerryDefs[rng.nextInt(kBerryDefs.length)];
+    berry.apply(this);
+    showFloatingLabel(pos, berry.label);
+  }
+
+  void _keeperSkipIntermission(Vector2 pos) {
+    state.intermissionRemaining = 0;
+    showFloatingLabel(pos, 'Wave Ready!');
   }
 
   void showBellWarning(String text, {WaveDef? incomingWave}) {
