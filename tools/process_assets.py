@@ -1,12 +1,26 @@
 """
 Slices source sprite sheets from assets/Bright_Fortune_gameplay_assets and
-assets/Bright_Fortune_additional_assets into individual, tightly-cropped PNG
+assets/Bright_Fortune_additional_assets into individual, tightly-cropped WebP
 sprites used by the Flutter game, and copies full-size background/screen
 images into their final destination folders.
+
+Output is WebP (not PNG) to keep the shipped app small - the source sheets
+themselves are already WebP, so re-encoding the sliced output as PNG was
+needlessly doubling the bundled asset size for no quality benefit.
 """
 import os
 import numpy as np
 from PIL import Image
+
+# High-quality lossy WebP: visually indistinguishable from the source at a
+# fraction of PNG's size. method=6 spends the most effort for the smallest
+# output file.
+WEBP_QUALITY = 90
+WEBP_METHOD = 6
+
+
+def save_webp(im: Image.Image, out_path: str) -> None:
+    im.save(out_path, "WEBP", quality=WEBP_QUALITY, method=WEBP_METHOD)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 GAMEPLAY_SRC = os.path.join(ROOT, "assets", "Bright_Fortune_gameplay_assets")
@@ -89,8 +103,8 @@ def slice_grid(filename, names, rows=1, cols=None, src_dir=GAMEPLAY_SRC, out_dir
             cl, cr = col_groups[c]
             cell = im.crop((cl, rt, cr + 1, rb + 1))
             cell = autocrop(cell)
-            out_path = os.path.join(out_dir, names[idx] + ".png")
-            cell.save(out_path)
+            out_path = os.path.join(out_dir, names[idx] + ".webp")
+            save_webp(cell, out_path)
             print("sliced", out_path, cell.size)
             idx += 1
 
@@ -100,8 +114,8 @@ def copy_single(filename, out_name, src_dir=GAMEPLAY_SRC, out_dir=OUT_SPRITES, c
     im = Image.open(path).convert("RGBA")
     if crop:
         im = autocrop(im)
-    out_path = os.path.join(out_dir, out_name + ".png")
-    im.save(out_path)
+    out_path = os.path.join(out_dir, out_name + ".webp")
+    save_webp(im, out_path)
     print("copied", out_path, im.size)
 
 
