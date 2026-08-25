@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 
+import '../../core/assets.dart';
 import '../../core/colors.dart';
 import '../../core/text_styles.dart';
+import '../../data/bounty_catalog.dart';
 import '../../data/enemy_catalog.dart';
 import '../../data/tower_catalog.dart';
+import '../../models/bounty_def.dart';
 import '../../models/enemy_def.dart';
+import '../../services/audio_service.dart';
 import '../../services/player_progress.dart';
 import '../../widgets/game_button.dart';
 import '../../widgets/panel_box.dart';
@@ -44,6 +48,17 @@ class _CollectionScreenState extends State<CollectionScreen> {
                       ],
                     ),
                   ),
+                  SizedBox(
+                    height: 96,
+                    child: ListView.separated(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      scrollDirection: Axis.horizontal,
+                      itemCount: BountyCatalog.all.length,
+                      separatorBuilder: (_, _) => const SizedBox(width: 10),
+                      itemBuilder: (context, index) => _BountyCard(def: BountyCatalog.all[index], progress: progress),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Row(
@@ -51,6 +66,12 @@ class _CollectionScreenState extends State<CollectionScreen> {
                         _TabButton(label: 'Defenses', selected: _tab == 0, onTap: () => setState(() => _tab = 0)),
                         const SizedBox(width: 10),
                         _TabButton(label: 'Bestiary', selected: _tab == 1, onTap: () => setState(() => _tab = 1)),
+                        const Spacer(),
+                        if (_tab == 1)
+                          Text(
+                            'Discovered ${_discoveredCount(progress)} / ${_allEnemies.length}',
+                            style: AppText.body_(size: 12, color: AppColors.textMuted, weight: FontWeight.w700),
+                          ),
                       ],
                     ),
                   ),
@@ -85,8 +106,12 @@ class _CollectionScreenState extends State<CollectionScreen> {
     );
   }
 
+  List<EnemyDef> get _allEnemies => [...EnemyCatalog.common, ...EnemyCatalog.special, ...EnemyCatalog.elite, ...EnemyCatalog.boss];
+
+  int _discoveredCount(PlayerProgress progress) => _allEnemies.where((e) => progress.isEnemyDiscovered(e.id)).length;
+
   Widget _enemiesGrid(PlayerProgress progress) {
-    final all = [...EnemyCatalog.common, ...EnemyCatalog.special, ...EnemyCatalog.elite, ...EnemyCatalog.boss];
+    final all = _allEnemies;
     return GridView.builder(
       padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -179,6 +204,94 @@ class _EntryCard extends StatelessWidget {
           if (badge.isNotEmpty)
             Text(badge, style: AppText.body_(size: 9, color: AppColors.gold)),
         ],
+      ),
+    );
+  }
+}
+
+/// One Bestiary completion bounty: shows the permanent bonus it unlocks,
+/// discovery progress toward that category, and a Claim button once ready.
+class _BountyCard extends StatelessWidget {
+  final BountyDef def;
+  final PlayerProgress progress;
+
+  const _BountyCard({required this.def, required this.progress});
+
+  @override
+  Widget build(BuildContext context) {
+    final claimed = progress.isBountyClaimed(def.id);
+    final done = progress.bountyProgress(def);
+    final total = def.enemies.length;
+    final ready = !claimed && done >= total;
+
+    return SizedBox(
+      width: 136,
+      child: PanelBox(
+        borderRadius: 16,
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        borderColor: ready ? AppColors.gold : AppColors.panelBorder.withValues(alpha: claimed ? 0.4 : 1),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Opacity(
+                  opacity: claimed ? 0.6 : 1,
+                  child: Image.asset(def.icon, width: 22, height: 22),
+                ),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: Text(
+                    def.bonusLabel,
+                    style: AppText.body_(size: 10, weight: FontWeight.w800, color: AppColors.gold),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 6),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: LinearProgressIndicator(
+                value: total == 0 ? 0 : done / total,
+                minHeight: 6,
+                backgroundColor: Colors.black45,
+                valueColor: AlwaysStoppedAnimation(claimed ? AppColors.green : AppColors.gold),
+              ),
+            ),
+            const SizedBox(height: 6),
+            if (claimed)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.check_circle_rounded, color: AppColors.green, size: 14),
+                  const SizedBox(width: 4),
+                  Text('Claimed', style: AppText.body_(size: 11, color: AppColors.green, weight: FontWeight.w800)),
+                ],
+              )
+            else if (ready)
+              GestureDetector(
+                onTap: () {
+                  AudioService.instance.playSfx(Assets.sfxRewardReceived);
+                  progress.claimBounty(def);
+                },
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  decoration: BoxDecoration(gradient: AppColors.goldButton, borderRadius: BorderRadius.circular(10)),
+                  child: Text(
+                    'Claim',
+                    textAlign: TextAlign.center,
+                    style: AppText.body_(size: 11, color: const Color(0xFF4A2A00), weight: FontWeight.w800),
+                  ),
+                ),
+              )
+            else
+              Text('$done / $total defeated', style: AppText.body_(size: 10, color: Colors.white70)),
+          ],
+        ),
       ),
     );
   }

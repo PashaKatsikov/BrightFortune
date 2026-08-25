@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 
+import '../data/bounty_catalog.dart';
 import '../data/location_catalog.dart';
 import '../data/upgrade_catalog.dart';
+import '../models/bounty_def.dart';
 import '../models/upgrade_def.dart';
 import 'audio_service.dart';
 import 'storage_service.dart';
@@ -23,6 +25,7 @@ class PlayerProgress extends ChangeNotifier {
   final Map<UpgradeType, int> upgradeLevels = {for (final u in UpgradeType.values) u: 0};
   final Map<String, int> levelStars = {}; // "loc_level" -> stars(1-3)
   final Set<String> defeatedEnemies = {};
+  final Set<String> claimedBounties = {};
 
   double musicVolume = 0.6;
   double sfxVolume = 0.85;
@@ -57,6 +60,11 @@ class PlayerProgress extends ChangeNotifier {
       defeatedEnemies.addAll(defeated.map((e) => e.toString()));
     }
 
+    final bounties = data['claimedBounties'] as List<dynamic>?;
+    if (bounties != null) {
+      claimedBounties.addAll(bounties.map((e) => e.toString()));
+    }
+
     final settings = data['settings'] as Map<String, dynamic>?;
     if (settings != null) {
       musicVolume = (settings['music'] as num?)?.toDouble() ?? musicVolume;
@@ -84,6 +92,7 @@ class PlayerProgress extends ChangeNotifier {
       'upgrades': upgradeLevels.map((k, v) => MapEntry(k.name, v)),
       'levelStars': levelStars,
       'defeatedEnemies': defeatedEnemies.toList(),
+      'claimedBounties': claimedBounties.toList(),
       'settings': {
         'music': musicVolume,
         'sfx': sfxVolume,
@@ -205,6 +214,36 @@ class PlayerProgress extends ChangeNotifier {
   }
 
   bool isEnemyDiscovered(String enemyId) => defeatedEnemies.contains(enemyId);
+
+  // ---------------------------------------------------------------------
+  // Bestiary bounties
+  // ---------------------------------------------------------------------
+  bool isBountyClaimed(String bountyId) => claimedBounties.contains(bountyId);
+
+  int bountyProgress(BountyDef def) => def.enemies.where((e) => defeatedEnemies.contains(e.id)).length;
+
+  bool isBountyReady(BountyDef def) => !isBountyClaimed(def.id) && bountyProgress(def) >= def.enemies.length;
+
+  bool claimBounty(BountyDef def) {
+    if (!isBountyReady(def)) return false;
+    claimedBounties.add(def.id);
+    if (def.coinReward > 0) coins += def.coinReward;
+    if (def.shardReward > 0) shards += def.shardReward;
+    notifyListeners();
+    _persist();
+    return true;
+  }
+
+  /// Sums the magnitude of every claimed bounty that boosts [type], so
+  /// multiple completed bounties of the same kind stack additively.
+  double bountyBonus(BountyBonusType type) {
+    double total = 0;
+    for (final id in claimedBounties) {
+      final def = BountyCatalog.byId[id];
+      if (def != null && def.bonusType == type) total += def.bonusMagnitude;
+    }
+    return total;
+  }
 
   // ---------------------------------------------------------------------
   // Settings

@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'core/colors.dart';
 import 'core/text_styles.dart';
 import 'screens/loading/loading_screen.dart';
+import 'services/analytics_service.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,6 +20,8 @@ void main() {
     DeviceOrientation.landscapeRight,
   ]);
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+  // Fire-and-forget: attribution should never delay or block app startup.
+  unawaited(AnalyticsService.instance.init());
   runApp(const BrightFortuneApp());
 }
 

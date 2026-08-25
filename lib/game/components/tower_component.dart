@@ -1,5 +1,6 @@
 import 'package:flame/components.dart';
 
+import '../../models/bounty_def.dart';
 import '../../models/tower_def.dart';
 import '../../models/upgrade_def.dart';
 import '../../models/wave_def.dart';
@@ -158,7 +159,11 @@ class TowerComponent extends PositionComponent {
 
   void _updateRepair(double dt) {
     final progress = PlayerProgress.instance;
-    final effBonus = 1 + progress.upgradeBonus(UpgradeType.repairEfficiency) + game.state.buffMultiplier(BuffType.repairSpeed) - 1;
+    final effBonus = 1 +
+        progress.upgradeBonus(UpgradeType.repairEfficiency) +
+        progress.bountyBonus(BountyBonusType.repairSpeed) +
+        game.state.buffMultiplier(BuffType.repairSpeed) -
+        1;
     final focusMult = boostActive ? 4.0 : 1.0;
     final rate = def.repairRatePerSec * effBonus * focusMult;
 

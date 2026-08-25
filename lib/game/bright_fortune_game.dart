@@ -6,6 +6,7 @@ import 'package:flame/game.dart';
 import '../core/assets.dart';
 import '../data/enemy_catalog.dart';
 import '../data/tower_catalog.dart';
+import '../models/bounty_def.dart';
 import '../models/enemy_def.dart';
 import '../models/location_def.dart';
 import '../models/tower_def.dart';
@@ -78,6 +79,13 @@ class BrightFortuneGame extends FlameGame {
       initialWallHp: {for (final l in Lane.values) l: wallMax},
     );
 
+    // Shadow Radiance bounty: battles start with a bit of extra Star Core
+    // energy already banked.
+    final startingEnergyBonus = progress.bountyBonus(BountyBonusType.startingEnergy);
+    if (startingEnergyBonus > 0) {
+      state.energy = (state.energy + energyMax * startingEnergyBonus).clamp(0.0, energyMax);
+    }
+
     final world = this.world;
     await world.add(ArenaBackgroundComponent());
     await world.add(ArenaDecorComponent());
@@ -145,7 +153,7 @@ class BrightFortuneGame extends FlameGame {
     }
 
     final burstRate = state.baseBurstChargeRatePerSec *
-        (1 + progress.upgradeBonus(UpgradeType.burstChargeSpeed)) *
+        (1 + progress.upgradeBonus(UpgradeType.burstChargeSpeed) + progress.bountyBonus(BountyBonusType.burstChargeSpeed)) *
         state.buffMultiplier(BuffType.burstChargeRate);
     state.burstCharge = (state.burstCharge + burstRate * dt).clamp(0.0, state.burstMax);
   }
@@ -185,10 +193,13 @@ class BrightFortuneGame extends FlameGame {
   void onEnemyDefeated(EnemyComponent enemy) {
     enemies.remove(enemy);
     state.enemiesAliveInWave = math.max(0, state.enemiesAliveInWave - 1);
-    PlayerProgress.instance.addCoins(enemy.def.coinReward);
-    if (enemy.def.shardReward > 0) PlayerProgress.instance.addShards(enemy.def.shardReward);
-    PlayerProgress.instance.markEnemyDefeated(enemy.def.id);
-    state.coinsEarned += enemy.def.coinReward;
+    final progress = PlayerProgress.instance;
+    final coinMult = 1 + progress.bountyBonus(BountyBonusType.coinDrop);
+    final coinReward = (enemy.def.coinReward * coinMult).round();
+    progress.addCoins(coinReward);
+    if (enemy.def.shardReward > 0) progress.addShards(enemy.def.shardReward);
+    progress.markEnemyDefeated(enemy.def.id);
+    state.coinsEarned += coinReward;
     state.shardsEarned += enemy.def.shardReward;
   }
 

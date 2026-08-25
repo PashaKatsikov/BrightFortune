@@ -2,7 +2,7 @@ name: bright_fortune
 description: "Bright Fortune - a magical active tower defense game."
 publish_to: 'none'
 
-version: 1.0.1+2
+version: 1.0.2+3
 
 environment:
   sdk: ^3.12.2
@@ -17,6 +17,7 @@ dependencies:
   webview_flutter: ^4.13.0
   audioplayers: ^6.5.1
   url_launcher: ^6.3.2
+  appsflyer_sdk: ^6.18.1
 
 dev_dependencies:
   flutter_test:
