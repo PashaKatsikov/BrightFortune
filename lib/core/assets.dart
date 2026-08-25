@@ -8,122 +8,122 @@ class Assets {
   static const String _sfx = 'assets/Bright_Fortune_sounds_assets';
 
   // UI / loading
-  static const String gameName = '$_ui/game_name.png';
-  static const String loadingHorizontal = '$_ui/loading_horizontal.png';
-  static const String loadingVertical = '$_ui/loading_vertical.png';
+  static const String gameName = '$_ui/game_name.webp';
+  static const String loadingHorizontal = '$_ui/loading_horizontal.webp';
+  static const String loadingVertical = '$_ui/loading_vertical.webp';
 
   // Backgrounds
-  static const String bgBrightGarden = '$_backgrounds/bg_bright_garden.png';
-  static const String bgBerryValley = '$_backgrounds/bg_berry_valley.png';
-  static const String bgGoldenOrchard = '$_backgrounds/bg_golden_orchard.png';
-  static const String bgBellwood = '$_backgrounds/bg_bellwood.png';
-  static const String bgStarRidge = '$_backgrounds/bg_star_ridge.png';
-  static const String bgGameplayTerrain = '$_backgrounds/bg_gameplay_terrain.png';
+  static const String bgBrightGarden = '$_backgrounds/bg_bright_garden.webp';
+  static const String bgBerryValley = '$_backgrounds/bg_berry_valley.webp';
+  static const String bgGoldenOrchard = '$_backgrounds/bg_golden_orchard.webp';
+  static const String bgBellwood = '$_backgrounds/bg_bellwood.webp';
+  static const String bgStarRidge = '$_backgrounds/bg_star_ridge.webp';
+  static const String bgGameplayTerrain = '$_backgrounds/bg_gameplay_terrain.webp';
 
   // Towers
-  static const String towerBasic = '$_sprites/tower_basic.png';
-  static const String towerFast = '$_sprites/tower_fast.png';
-  static const String towerSlow = '$_sprites/tower_slow.png';
-  static const String towerHeavy = '$_sprites/tower_heavy.png';
-  static const String repairTower = '$_sprites/repair_tower.png';
-  static const String energyGenerator = '$_sprites/energy_generator.png';
+  static const String towerBasic = '$_sprites/tower_basic.webp';
+  static const String towerFast = '$_sprites/tower_fast.webp';
+  static const String towerSlow = '$_sprites/tower_slow.webp';
+  static const String towerHeavy = '$_sprites/tower_heavy.webp';
+  static const String repairTower = '$_sprites/repair_tower.webp';
+  static const String energyGenerator = '$_sprites/energy_generator.webp';
 
   // Core / fortress
-  static const String starCore = '$_sprites/star_core.png';
-  static const String starCoreActivationEffect = '$_sprites/star_core_activation_effect.png';
-  static const String fortressGate = '$_sprites/fortress_gate.png';
-  static const String energyShield = '$_sprites/energy_shield.png';
-  static const String energyBeam = '$_sprites/energy_beam.png';
+  static const String starCore = '$_sprites/star_core.webp';
+  static const String starCoreActivationEffect = '$_sprites/star_core_activation_effect.webp';
+  static const String fortressGate = '$_sprites/fortress_gate.webp';
+  static const String energyShield = '$_sprites/energy_shield.webp';
+  static const String energyBeam = '$_sprites/energy_beam.webp';
 
   // Walls
-  static const String wallStraight = '$_sprites/wall_straight.png';
-  static const String wallCorner = '$_sprites/wall_corner.png';
-  static const String wallGemFull = '$_sprites/wall_gem_full.png';
-  static const String wallBroken = '$_sprites/wall_broken.png';
+  static const String wallStraight = '$_sprites/wall_straight.webp';
+  static const String wallCorner = '$_sprites/wall_corner.webp';
+  static const String wallGemFull = '$_sprites/wall_gem_full.webp';
+  static const String wallBroken = '$_sprites/wall_broken.webp';
 
   // Bright Burst
-  static const String brightBurstCrystal = '$_sprites/bright_burst_crystal.png';
-  static const String brightBurstEffect = '$_sprites/bright_burst_effect.png';
+  static const String brightBurstCrystal = '$_sprites/bright_burst_crystal.webp';
+  static const String brightBurstEffect = '$_sprites/bright_burst_effect.webp';
 
   // Enemies - common
-  static const String enemyFast = '$_sprites/enemy_fast.png';
-  static const String enemyRound = '$_sprites/enemy_round.png';
-  static const String enemyArmoredSmall = '$_sprites/enemy_armored_small.png';
-  static const String enemyBerry = '$_sprites/enemy_berry.png';
+  static const String enemyFast = '$_sprites/enemy_fast.webp';
+  static const String enemyRound = '$_sprites/enemy_round.webp';
+  static const String enemyArmoredSmall = '$_sprites/enemy_armored_small.webp';
+  static const String enemyBerry = '$_sprites/enemy_berry.webp';
 
   // Enemies - special
-  static const String enemyFlameAttacker = '$_sprites/enemy_flame_attacker.png';
-  static const String enemyHeavyArmored = '$_sprites/enemy_heavy_armored.png';
-  static const String enemyRanged = '$_sprites/enemy_ranged.png';
-  static const String enemyWallBreaker = '$_sprites/enemy_wall_breaker.png';
+  static const String enemyFlameAttacker = '$_sprites/enemy_flame_attacker.webp';
+  static const String enemyHeavyArmored = '$_sprites/enemy_heavy_armored.webp';
+  static const String enemyRanged = '$_sprites/enemy_ranged.webp';
+  static const String enemyWallBreaker = '$_sprites/enemy_wall_breaker.webp';
 
   // Enemies - elite / boss
-  static const String eliteGuardian = '$_sprites/elite_guardian.png';
-  static const String eliteCorruptedFruit = '$_sprites/elite_corrupted_fruit.png';
-  static const String eliteStarEnergy = '$_sprites/elite_star_energy.png';
-  static const String finalBoss = '$_sprites/final_boss.png';
+  static const String eliteGuardian = '$_sprites/elite_guardian.webp';
+  static const String eliteCorruptedFruit = '$_sprites/elite_corrupted_fruit.webp';
+  static const String eliteStarEnergy = '$_sprites/elite_star_energy.webp';
+  static const String finalBoss = '$_sprites/final_boss.webp';
 
   // Companion
-  static const String brightKeeper = '$_sprites/bright_keeper.png';
+  static const String brightKeeper = '$_sprites/bright_keeper.webp';
 
   // Effects
-  static const String enemyDefeatEffect = '$_sprites/enemy_defeat_effect.png';
+  static const String enemyDefeatEffect = '$_sprites/enemy_defeat_effect.webp';
 
   // Fruits (temporary bonuses)
-  static const String fruitApple = '$_sprites/fruit_apple.png';
-  static const String fruitStrawberry = '$_sprites/fruit_strawberry.png';
-  static const String fruitBlueberry = '$_sprites/fruit_blueberry.png';
-  static const String fruitGoldenStar = '$_sprites/fruit_golden_star.png';
+  static const String fruitApple = '$_sprites/fruit_apple.webp';
+  static const String fruitStrawberry = '$_sprites/fruit_strawberry.webp';
+  static const String fruitBlueberry = '$_sprites/fruit_blueberry.webp';
+  static const String fruitGoldenStar = '$_sprites/fruit_golden_star.webp';
 
   // Berries (small tactical bonuses)
-  static const String berryStrawberry = '$_sprites/berry_strawberry.png';
-  static const String berryBlueberry = '$_sprites/berry_blueberry.png';
-  static const String berryRaspberry = '$_sprites/berry_raspberry.png';
-  static const String berryBlackberry = '$_sprites/berry_blackberry.png';
+  static const String berryStrawberry = '$_sprites/berry_strawberry.webp';
+  static const String berryBlueberry = '$_sprites/berry_blueberry.webp';
+  static const String berryRaspberry = '$_sprites/berry_raspberry.webp';
+  static const String berryBlackberry = '$_sprites/berry_blackberry.webp';
 
   // Currency
-  static const String goldenCoin = '$_sprites/golden_coin.png';
-  static const String starShard = '$_sprites/star_shard.png';
+  static const String goldenCoin = '$_sprites/golden_coin.webp';
+  static const String starShard = '$_sprites/star_shard.webp';
 
   // Warning
-  static const String goldenWarningBell = '$_sprites/golden_warning_bell.png';
+  static const String goldenWarningBell = '$_sprites/golden_warning_bell.webp';
 
   // Decorative bells
-  static const String decoBellGold = '$_sprites/deco_bell_gold.png';
-  static const String decoBellBlue = '$_sprites/deco_bell_blue.png';
-  static const String decoBellPink = '$_sprites/deco_bell_pink.png';
-  static const String decoBellPurple = '$_sprites/deco_bell_purple.png';
+  static const String decoBellGold = '$_sprites/deco_bell_gold.webp';
+  static const String decoBellBlue = '$_sprites/deco_bell_blue.webp';
+  static const String decoBellPink = '$_sprites/deco_bell_pink.webp';
+  static const String decoBellPurple = '$_sprites/deco_bell_purple.webp';
 
   // Decorative plants / trees / bushes / stones / crystals / paths
-  static const String plantFlowerYellow = '$_sprites/plant_flower_yellow.png';
-  static const String plantLeaf = '$_sprites/plant_leaf.png';
-  static const String plantStarFlower = '$_sprites/plant_star_flower.png';
-  static const String plantFern = '$_sprites/plant_fern.png';
+  static const String plantFlowerYellow = '$_sprites/plant_flower_yellow.webp';
+  static const String plantLeaf = '$_sprites/plant_leaf.webp';
+  static const String plantStarFlower = '$_sprites/plant_star_flower.webp';
+  static const String plantFern = '$_sprites/plant_fern.webp';
 
-  static const String treeApple = '$_sprites/tree_apple.png';
-  static const String treeOrange = '$_sprites/tree_orange.png';
-  static const String treePear = '$_sprites/tree_pear.png';
-  static const String treeFlowering = '$_sprites/tree_flowering.png';
+  static const String treeApple = '$_sprites/tree_apple.webp';
+  static const String treeOrange = '$_sprites/tree_orange.webp';
+  static const String treePear = '$_sprites/tree_pear.webp';
+  static const String treeFlowering = '$_sprites/tree_flowering.webp';
 
-  static const String bushStrawberry = '$_sprites/bush_strawberry.png';
-  static const String bushBlueberry = '$_sprites/bush_blueberry.png';
-  static const String bushRaspberry = '$_sprites/bush_raspberry.png';
-  static const String bushBlackberry = '$_sprites/bush_blackberry.png';
+  static const String bushStrawberry = '$_sprites/bush_strawberry.webp';
+  static const String bushBlueberry = '$_sprites/bush_blueberry.webp';
+  static const String bushRaspberry = '$_sprites/bush_raspberry.webp';
+  static const String bushBlackberry = '$_sprites/bush_blackberry.webp';
 
-  static const String stoneSmall = '$_sprites/stone_small.png';
-  static const String stoneFlat = '$_sprites/stone_flat.png';
-  static const String stoneCrystal = '$_sprites/stone_crystal.png';
-  static const String stoneGoldVeined = '$_sprites/stone_gold_veined.png';
+  static const String stoneSmall = '$_sprites/stone_small.webp';
+  static const String stoneFlat = '$_sprites/stone_flat.webp';
+  static const String stoneCrystal = '$_sprites/stone_crystal.webp';
+  static const String stoneGoldVeined = '$_sprites/stone_gold_veined.webp';
 
-  static const String crystalBlue = '$_sprites/crystal_blue.png';
-  static const String crystalPurple = '$_sprites/crystal_purple.png';
-  static const String crystalGold = '$_sprites/crystal_gold.png';
-  static const String crystalWhite = '$_sprites/crystal_white.png';
+  static const String crystalBlue = '$_sprites/crystal_blue.webp';
+  static const String crystalPurple = '$_sprites/crystal_purple.webp';
+  static const String crystalGold = '$_sprites/crystal_gold.webp';
+  static const String crystalWhite = '$_sprites/crystal_white.webp';
 
-  static const String pathStraight = '$_sprites/path_straight.png';
-  static const String pathCorner = '$_sprites/path_corner.png';
-  static const String pathT = '$_sprites/path_t.png';
-  static const String pathCross = '$_sprites/path_cross.png';
+  static const String pathStraight = '$_sprites/path_straight.webp';
+  static const String pathCorner = '$_sprites/path_corner.webp';
+  static const String pathT = '$_sprites/path_t.webp';
+  static const String pathCross = '$_sprites/path_cross.webp';
 
   // Sounds
   static const String sfxBellWarning = '$_sfx/Bell_Warning_asset.mp3';
