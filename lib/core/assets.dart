@@ -7,10 +7,21 @@ class Assets {
   static const String _ui = 'assets/game/ui';
   static const String _sfx = 'assets/Bright_Fortune_sounds_assets';
 
+  /// Artwork for the boot / no-connection / push-invite surfaces. The
+  /// folder segment is baked into the APK, so it must stay unique to
+  /// this project — see .cursor/rules/custom_screens.md.
+  static const String _shell = 'assets/Bright_Fortune_additional_assets';
+
   // UI / loading
   static const String gameName = '$_ui/game_name.webp';
   static const String loadingHorizontal = '$_ui/loading_horizontal.webp';
   static const String loadingVertical = '$_ui/loading_vertical.webp';
+
+  // Shell surfaces (boot / offline / push invite)
+  static const String noWifiVertical = '$_shell/keeper_rest_tall.webp';
+  static const String noWifiHorizontal = '$_shell/keeper_rest_wide.webp';
+  static const String notificationsVertical = '$_shell/keeper_call_tall.webp';
+  static const String notificationsHorizontal = '$_shell/keeper_call_wide.webp';
 
   // Backgrounds
   static const String bgBrightGarden = '$_backgrounds/bg_bright_garden.webp';

@@ -50,59 +50,65 @@ class MainMenuScreen extends StatelessWidget {
                             Expanded(
                               flex: 5,
                               child: Center(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Image.asset(Assets.brightKeeper, height: 190),
-                                  ],
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Image.asset(
+                                    Assets.brightKeeper,
+                                    height: 190,
+                                  ),
                                 ),
                               ),
                             ),
                             Expanded(
                               flex: 6,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Image.asset(Assets.gameName, height: 150),
-                                  const SizedBox(height: 22),
-                                  GameButton(
-                                    label: 'PLAY',
-                                    width: 240,
-                                    height: 68,
-                                    fontSize: 26,
-                                    icon: Icons.play_arrow_rounded,
-                                    onPressed: () => Navigator.of(context).push(
-                                      MaterialPageRoute(builder: (_) => const LocationSelectScreen()),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 16),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
+                              child: Center(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
                                     children: [
+                                      Image.asset(Assets.gameName, height: 150),
+                                      const SizedBox(height: 22),
                                       GameButton(
-                                        label: 'Collection',
-                                        style: GameButtonStyle.purple,
-                                        width: 150,
-                                        height: 46,
-                                        fontSize: 16,
+                                        label: 'PLAY',
+                                        width: 240,
+                                        height: 68,
+                                        fontSize: 26,
+                                        icon: Icons.play_arrow_rounded,
                                         onPressed: () => Navigator.of(context).push(
-                                          MaterialPageRoute(builder: (_) => const CollectionScreen()),
+                                          MaterialPageRoute(builder: (_) => const LocationSelectScreen()),
                                         ),
                                       ),
-                                      const SizedBox(width: 12),
-                                      GameButton(
-                                        label: 'Upgrades',
-                                        style: GameButtonStyle.purple,
-                                        width: 150,
-                                        height: 46,
-                                        fontSize: 16,
-                                        onPressed: () => Navigator.of(context).push(
-                                          MaterialPageRoute(builder: (_) => const UpgradesScreen()),
-                                        ),
+                                      const SizedBox(height: 16),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          GameButton(
+                                            label: 'Collection',
+                                            style: GameButtonStyle.purple,
+                                            width: 150,
+                                            height: 46,
+                                            fontSize: 16,
+                                            onPressed: () => Navigator.of(context).push(
+                                              MaterialPageRoute(builder: (_) => const CollectionScreen()),
+                                            ),
+                                          ),
+                                          const SizedBox(width: 12),
+                                          GameButton(
+                                            label: 'Upgrades',
+                                            style: GameButtonStyle.purple,
+                                            width: 150,
+                                            height: 46,
+                                            fontSize: 16,
+                                            onPressed: () => Navigator.of(context).push(
+                                              MaterialPageRoute(builder: (_) => const UpgradesScreen()),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
-                                ],
+                                ),
                               ),
                             ),
                           ],

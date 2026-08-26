@@ -14,6 +14,23 @@ rootProject.layout.buildDirectory.value(newBuildDir)
 subprojects {
     val newSubprojectBuildDir: Directory = newBuildDir.dir(project.name)
     project.layout.buildDirectory.value(newSubprojectBuildDir)
+
+    // Force every Android library subproject up to the app's compileSdk.
+    // Some plugins ship compileSdk 34 while their transitive deps demand
+    // 36, which trips CheckAarMetadata.
+    //
+    // Must be registered BEFORE the evaluationDependsOn(":app") block
+    // below — that call evaluates the subprojects eagerly and Gradle then
+    // refuses to attach afterEvaluate (gray_part_pitfalls.md §2, §7).
+    afterEvaluate {
+        extensions
+            .findByType(com.android.build.gradle.LibraryExtension::class.java)
+            ?.apply {
+                if ((compileSdk ?: 0) < 36) {
+                    compileSdk = 36
+                }
+            }
+    }
 }
 subprojects {
     project.evaluationDependsOn(":app")

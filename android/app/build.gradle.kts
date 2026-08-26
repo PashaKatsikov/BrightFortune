@@ -6,6 +6,13 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+// Apply the Google Services plugin only when google-services.json is
+// present, so a checkout without Firebase credentials still builds
+// (the routing gate then falls back to the native game).
+if (file("google-services.json").exists()) {
+    apply(plugin = "com.google.gms.google-services")
+}
+
 // Release signing credentials live in android/key.properties, which is
 // gitignored - never commit real keystore passwords to source control.
 val keystoreProperties = Properties()
@@ -17,21 +24,24 @@ if (hasKeystoreProperties) {
 
 android {
     namespace = "com.brightfortune.brightfortunegame"
-    compileSdk = flutter.compileSdkVersion
+    // Pinned at 36: some plugins still declare compileSdk 34 while their
+    // transitive deps require 36 (gray_part_pitfalls.md §2).
+    compileSdk = 36
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
+        // Required by flutter_local_notifications (java.time.*) — §5.
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.brightfortune.brightfortunegame"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
+        // API 26 is the lowest level the pinned Firebase / AppsFlyer /
+        // notifications stack supports; raising it only cuts reach.
+        minSdk = 26
+        targetSdk = 35
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
@@ -61,6 +71,10 @@ kotlin {
     compilerOptions {
         jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
     }
+}
+
+dependencies {
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 }
 
 flutter {

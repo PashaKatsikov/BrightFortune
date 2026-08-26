@@ -1,0 +1,16 @@
+<!--
+    Small notification icon: a flame silhouette with a hollow ember core.
+    Android tints the small icon to a flat colour and only honours the
+    alpha channel, so the shape has to read as fire on its own at 24 dp.
+    Kept visually distinct from the launcher icon.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:fillType="evenOdd"
+        android:pathData="M12.4,1.8c2.3,3.2 5.8,5.4 6.2,9.4c0.5,4.3 -2.9,8.1 -6.9,8.1c-4.1,0 -7.3,-3.4 -7,-7.5c0.2,-2.6 1.7,-4.4 3.4,-6c-0.6,1.9 -0.3,3.7 0.8,5.1c-0.7,-4 0.9,-7.3 3.5,-9.1zM12.1,10.6c1.2,1.7 2.7,2.7 2.8,4.6c0.1,1.9 -1.4,3.4 -3.2,3.4c-1.8,0 -3.2,-1.5 -3.1,-3.3c0.1,-1.8 1.7,-2.9 3.5,-4.7z"/>
+</vector>

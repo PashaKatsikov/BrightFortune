@@ -1,0 +1,27 @@
+{
+  "generatedAt": "2026-08-26T17:37:40.548372",
+  "displayName": "Bright Fortune",
+  "applicationId": "com.brightfortune.brightfortunegame",
+  "packageSlug": "bright_fortune",
+  "configEndpointUrl": "https://brighttfortune.site/config.php",
+  "privacyUrl": "https://brighttfortune.site/privacy-policy.html",
+  "codecFamily": "rc4_ksa",
+  "codecStreamLen": 41,
+  "chromeVersion": "150.0.7935.212",
+  "keyPrefix": "zx8_",
+  "channelId": "lantern_alerts",
+  "timings": {
+    "$comment": "Rotated to stay >=10% from every shipped sibling and the template defaults; golden-path flow is unchanged (only timeout/await ceilings shift).",
+    "permissionSnoozeSeconds": 360000,
+    "organicRescueDelay": 5,
+    "verdictTimeoutSeconds": 24,
+    "firstInstallAwaitSeconds": 38,
+    "returningInstallAwaitSeconds": 10,
+    "deepLinkAwaitSeconds": 8,
+    "pushLaunchAwaitSeconds": 4,
+    "reachProbeTimeoutSeconds": 9,
+    "reachDropDebounceMs": 540,
+    "redirectLoopRetries": 1,
+    "cachedUrlLifetimeSeconds": 900000
+  }
+}

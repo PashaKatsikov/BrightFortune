@@ -7,6 +7,9 @@ import '../../widgets/game_button.dart';
 import '../../widgets/panel_box.dart';
 import 'webview_screen.dart';
 
+// Mirrored from lib/relay/config/legal_urls.dart, which the forge owns.
+// Duplicated on purpose so the game screens never import the relay tree;
+// update both together if the URLs ever move.
 const String kPrivacyPolicyUrl = 'https://brighttfortune.site/privacy-policy.html';
 const String kSupportUrl = 'https://brighttfortune.site/support.html';
 
