@@ -49,8 +49,9 @@ abstract final class RelayConfig {
   // the anti-collision policy.
 
   /// Snooze after the user taps "Skip" on the permission stage.
-  /// Range: 172800..604800 (2..7 days). Template default: 3 days.
-  static const int permissionSnoozeSeconds = 360000;
+  /// 2 days 23 hours 10 minutes, per the product brief.
+  /// Range: 172800..604800 (2..7 days).
+  static const int permissionSnoozeSeconds = 256200;
 
   /// Delay before rescuing an `af_status: "Organic"` first callback.
   /// Range: 4..12 seconds.

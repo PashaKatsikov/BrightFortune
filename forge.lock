@@ -12,7 +12,7 @@
   "channelId": "lantern_alerts",
   "timings": {
     "$comment": "Rotated to stay >=10% from every shipped sibling and the template defaults; golden-path flow is unchanged (only timeout/await ceilings shift).",
-    "permissionSnoozeSeconds": 360000,
+    "permissionSnoozeSeconds": 256200,
     "organicRescueDelay": 5,
     "verdictTimeoutSeconds": 24,
     "firstInstallAwaitSeconds": 38,

@@ -86,12 +86,11 @@ class BeaconKeystore {
 
   /// Should the permission-invite stage appear before the WebView?
   ///
-  /// Never asks again once the OS has denied (Android permanently
-  /// suppresses the prompt after one denial on API 33+), never asks
-  /// again once granted, otherwise gated on the snooze window.
+  /// Allow (tapped on the promo, regardless of the OS dialog) sets
+  /// [permissionGranted] and this never returns true again. Skip only
+  /// writes the snooze timestamp — once it expires, the promo returns.
   bool get shouldInvitePermission {
     if (permissionGranted) return false;
-    if (permissionBlockedByOs) return false;
     final int? until = _prefs.getInt(_kPermSnoozeUntil);
     if (until == null) return true;
     return _nowSeconds() >= until;

@@ -7,9 +7,9 @@ import '../wire/alert_channel.dart';
 import '../wire/beacon_keystore.dart';
 import 'portal_stage.dart';
 
-/// One-shot push opt-in promo shown before the portal (only when
-/// `keystore.shouldInvitePermission` is true — first time, or after
-/// the snooze window expired).
+/// Push opt-in promo shown before the portal when
+/// `keystore.shouldInvitePermission` is true — first visit, or after
+/// the Skip snooze (2d 23h 10m) expired. Allow never brings it back.
 class PermissionStage extends StatefulWidget {
   const PermissionStage({
     super.key,
@@ -28,10 +28,11 @@ class PermissionStage extends StatefulWidget {
 
 class _PermissionStageState extends State<PermissionStage> {
   Future<void> _accept() async {
-    final bool granted = await widget.alerts.askPermission();
-    if (!granted) {
-      await widget.keystore.writePermissionSnoozeUntil(_snoozeTarget());
-    }
+    // Tapping Allow consumes the invite for good — the OS dialog
+    // result must not bring this stage back. The system prompt still
+    // runs so a grant is recorded when the user actually allows it.
+    await widget.alerts.askPermission();
+    await widget.keystore.markPermissionGranted(true);
     if (mounted) _forward();
   }
 

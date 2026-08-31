@@ -17,9 +17,7 @@ class Assets {
   static const String loadingHorizontal = '$_ui/loading_horizontal.webp';
   static const String loadingVertical = '$_ui/loading_vertical.webp';
 
-  // Shell surfaces (boot / offline / push invite)
-  static const String noWifiVertical = '$_shell/keeper_rest_tall.webp';
-  static const String noWifiHorizontal = '$_shell/keeper_rest_wide.webp';
+  // Shell surfaces (boot / push invite)
   static const String notificationsVertical = '$_shell/keeper_call_tall.webp';
   static const String notificationsHorizontal = '$_shell/keeper_call_wide.webp';
 

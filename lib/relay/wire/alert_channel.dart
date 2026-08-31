@@ -119,8 +119,8 @@ class AlertChannel {
     }
   }
 
-  /// System permission prompt. Records an OS-denied flag so the
-  /// invite stage stops reappearing after a hard "no".
+  /// System permission prompt. The invite stage treats an Allow tap
+  /// as final on its own; this only records the OS result.
   Future<bool> askPermission() async {
     if (_messaging == null) return false;
     final NotificationSettings settings = await _messaging!.requestPermission(
